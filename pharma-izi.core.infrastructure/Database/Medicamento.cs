@@ -11,8 +11,6 @@ public partial class Medicamento
 
     public Guid IdCategoriaMedicamento { get; set; }
 
-    public decimal Valor { get; set; }
-
     public bool EnStock { get; set; }
 
     public Guid IdTipoIva { get; set; }
@@ -23,11 +21,17 @@ public partial class Medicamento
 
     public Guid IdMarcaMedicamento { get; set; }
 
+    public Guid IdZonaConsulta { get; set; }
+
     public virtual CategoriaMedicamento IdCategoriaMedicamentoNavigation { get; set; } = null!;
 
     public virtual MarcaMedicamento IdMarcaMedicamentoNavigation { get; set; } = null!;
 
     public virtual TipoIva IdTipoIvaNavigation { get; set; } = null!;
 
+    public virtual ZonaConsultum IdZonaConsultaNavigation { get; set; } = null!;
+
     public virtual ICollection<MedicinaReceta> MedicinaReceta { get; set; } = new List<MedicinaReceta>();
+
+    public virtual ICollection<PresentacionesMedicamento> PresentacionesMedicamentos { get; set; } = new List<PresentacionesMedicamento>();
 }

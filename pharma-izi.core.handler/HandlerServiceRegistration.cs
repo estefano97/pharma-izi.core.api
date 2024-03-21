@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,15 +11,15 @@ namespace pharma_izi.core.handler
 {
     public static class HandlerServiceRegistration
     {
-        //public static IServiceCollection AddInHandlerServices(this IServiceCollection services, IConfiguration configuration)
-        //{
-        //    //AUTOMAPPER CONFIGURATION
-        //    services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        public static IServiceCollection AddInHandlerServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            //AUTOMAPPER CONFIGURATION
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-        //    //MEDIATOR CONFIGURATION
-        //    services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(HandlerServiceRegistration)));
+            //MEDIATOR CONFIGURATION
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(typeof(HandlerServiceRegistration)));
 
-        //    return services;
-        //}
+            return services;
+        }
     }
 }

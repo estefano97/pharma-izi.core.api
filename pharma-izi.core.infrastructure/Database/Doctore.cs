@@ -23,6 +23,8 @@ public partial class Doctore
 
     public string Apellido { get; set; } = null!;
 
+    public string Identificacion { get; set; } = null!;
+
     public virtual TemplatesReceta IdTemplateRecetaNavigation { get; set; } = null!;
 
     public virtual ICollection<Receta> Receta { get; set; } = new List<Receta>();

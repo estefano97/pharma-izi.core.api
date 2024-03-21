@@ -37,6 +37,8 @@ public partial class PharmaIziContext : DbContext
 
     public virtual DbSet<Pedido> Pedidos { get; set; }
 
+    public virtual DbSet<PresentacionesMedicamento> PresentacionesMedicamentos { get; set; }
+
     public virtual DbSet<Receta> Recetas { get; set; }
 
     public virtual DbSet<TemplatesReceta> TemplatesRecetas { get; set; }
@@ -44,6 +46,8 @@ public partial class PharmaIziContext : DbContext
     public virtual DbSet<TipoIva> TipoIvas { get; set; }
 
     public virtual DbSet<TiposPago> TiposPagos { get; set; }
+
+    public virtual DbSet<ZonaConsultum> ZonaConsulta { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -187,6 +191,10 @@ public partial class PharmaIziContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("fecha_registro");
             entity.Property(e => e.IdTemplateReceta).HasColumnName("id_template_receta");
+            entity.Property(e => e.Identificacion)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("identificacion");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(128)
                 .IsUnicode(false)
@@ -252,22 +260,20 @@ public partial class PharmaIziContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.EnStock).HasColumnName("en_stock");
             entity.Property(e => e.FotoMedicamento)
-                .HasMaxLength(256)
+                .HasMaxLength(512)
                 .IsUnicode(false)
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("foto_medicamento");
             entity.Property(e => e.IdCategoriaMedicamento).HasColumnName("id_categoria_medicamento");
             entity.Property(e => e.IdMarcaMedicamento).HasColumnName("id_marca_medicamento");
             entity.Property(e => e.IdTipoIva).HasColumnName("id_tipo_iva");
+            entity.Property(e => e.IdZonaConsulta).HasColumnName("id_zona_consulta");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(256)
                 .IsUnicode(false)
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("nombre");
             entity.Property(e => e.RequiereReceta).HasColumnName("requiere_receta");
-            entity.Property(e => e.Valor)
-                .HasColumnType("decimal(38, 0)")
-                .HasColumnName("valor");
 
             entity.HasOne(d => d.IdCategoriaMedicamentoNavigation).WithMany(p => p.Medicamentos)
                 .HasForeignKey(d => d.IdCategoriaMedicamento)
@@ -283,6 +289,11 @@ public partial class PharmaIziContext : DbContext
                 .HasForeignKey(d => d.IdTipoIva)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("medicamentos_FK_1");
+
+            entity.HasOne(d => d.IdZonaConsultaNavigation).WithMany(p => p.Medicamentos)
+                .HasForeignKey(d => d.IdZonaConsulta)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("medicamentos_FK_3");
         });
 
         modelBuilder.Entity<MedicinaReceta>(entity =>
@@ -337,7 +348,7 @@ public partial class PharmaIziContext : DbContext
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("nombre");
             entity.Property(e => e.Valor)
-                .HasColumnType("decimal(38, 0)")
+                .HasColumnType("decimal(38, 4)")
                 .HasColumnName("valor");
 
             entity.HasOne(d => d.IdTipoPagoNavigation).WithMany(p => p.Pagos)
@@ -379,6 +390,30 @@ public partial class PharmaIziContext : DbContext
                 .HasForeignKey(d => d.IdReceta)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("pedidos_FK_1");
+        });
+
+        modelBuilder.Entity<PresentacionesMedicamento>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("presentaciones_medicamentos_PK");
+
+            entity.ToTable("presentaciones_medicamentos");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(256)
+                .IsUnicode(false)
+                .HasColumnName("descripcion");
+            entity.Property(e => e.IdMedicamento).HasColumnName("id_medicamento");
+            entity.Property(e => e.Valor)
+                .HasColumnType("decimal(38, 4)")
+                .HasColumnName("valor");
+
+            entity.HasOne(d => d.IdMedicamentoNavigation).WithMany(p => p.PresentacionesMedicamentos)
+                .HasForeignKey(d => d.IdMedicamento)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("presentaciones_medicamentos_FK");
         });
 
         modelBuilder.Entity<Receta>(entity =>
@@ -466,6 +501,21 @@ public partial class PharmaIziContext : DbContext
                 .HasMaxLength(256)
                 .IsUnicode(false)
                 .UseCollation("Modern_Spanish_CI_AS")
+                .HasColumnName("descripcion");
+        });
+
+        modelBuilder.Entity<ZonaConsultum>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("zona_consulta_PK");
+
+            entity.ToTable("zona_consulta");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(256)
+                .IsUnicode(false)
                 .HasColumnName("descripcion");
         });
 
