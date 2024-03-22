@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pharma_izi.core.handler.mediator.doctor.createReceta
+namespace pharma_izi.core.handler.mediator.receta.create
 {
     public class CrearRecetaDoctorQuery : IRequest<CrearRecetaDoctorOut>
     {

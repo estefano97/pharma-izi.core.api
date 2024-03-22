@@ -3,11 +3,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using pharma_izi.core.infrastructure.Database;
 using pharma_izi.core.infrastructure.helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pharma_izi.core.handler.mediator.doctor.login
 {
