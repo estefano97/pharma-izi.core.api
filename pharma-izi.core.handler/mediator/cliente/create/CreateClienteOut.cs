@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace pharma_izi.core.handler.mediator.cliente.create
 {
-    internal class CreateClienteOut
+    public class CreateClienteOut
     {
+        public Guid idUsuario { get; set; }
     }
 }
