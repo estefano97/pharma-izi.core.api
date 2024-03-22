@@ -14,4 +14,6 @@ public partial class PresentacionesMedicamento
     public Guid IdMedicamento { get; set; }
 
     public virtual Medicamento IdMedicamentoNavigation { get; set; } = null!;
+
+    public virtual ICollection<MedicinaReceta> MedicinaReceta { get; set; } = new List<MedicinaReceta>();
 }

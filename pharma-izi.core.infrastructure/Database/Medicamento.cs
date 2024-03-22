@@ -31,7 +31,5 @@ public partial class Medicamento
 
     public virtual ZonaConsultum IdZonaConsultaNavigation { get; set; } = null!;
 
-    public virtual ICollection<MedicinaReceta> MedicinaReceta { get; set; } = new List<MedicinaReceta>();
-
     public virtual ICollection<PresentacionesMedicamento> PresentacionesMedicamentos { get; set; } = new List<PresentacionesMedicamento>();
 }

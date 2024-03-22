@@ -34,7 +34,7 @@ namespace pharma_izi.core.handler.mediator.cliente.create
                 };
                 var req = await _context.Clientes.AddAsync(usuario);
 
-                return new CreateClienteOut { idUsuario = usuario.Id };
+                return new CreateClienteOut { idUsuario = usuario.Id, cliente = req.Entity };
             }
             catch (Exception ex)
             {

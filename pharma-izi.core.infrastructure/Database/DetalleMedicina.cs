@@ -11,5 +11,7 @@ public partial class DetalleMedicina
 
     public string? Descripcion { get; set; }
 
+    public int Orden { get; set; }
+
     public virtual MedicinaReceta IdMedicinaRecetaNavigation { get; set; } = null!;
 }

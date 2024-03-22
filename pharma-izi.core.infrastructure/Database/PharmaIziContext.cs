@@ -154,9 +154,7 @@ public partial class PharmaIziContext : DbContext
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("fecha_escaneo");
             entity.Property(e => e.Valor)
-                .HasMaxLength(512)
                 .IsUnicode(false)
-                .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("valor");
         });
 
@@ -175,6 +173,7 @@ public partial class PharmaIziContext : DbContext
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("descripcion");
             entity.Property(e => e.IdMedicinaReceta).HasColumnName("id_medicina_receta");
+            entity.Property(e => e.Orden).HasColumnName("orden");
 
             entity.HasOne(d => d.IdMedicinaRecetaNavigation).WithMany(p => p.DetalleMedicinas)
                 .HasForeignKey(d => d.IdMedicinaReceta)
@@ -324,13 +323,13 @@ public partial class PharmaIziContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.IdMedicina).HasColumnName("id_medicina");
+            entity.Property(e => e.IdPresentacionMedicinaReceta).HasColumnName("id_presentacion_medicina_receta");
             entity.Property(e => e.IdReceta).HasColumnName("id_receta");
             entity.Property(e => e.IdTipoIva).HasColumnName("id_tipo_iva");
             entity.Property(e => e.RequiereReceta).HasColumnName("requiere_receta");
 
-            entity.HasOne(d => d.IdMedicinaNavigation).WithMany(p => p.MedicinaReceta)
-                .HasForeignKey(d => d.IdMedicina)
+            entity.HasOne(d => d.IdPresentacionMedicinaRecetaNavigation).WithMany(p => p.MedicinaReceta)
+                .HasForeignKey(d => d.IdPresentacionMedicinaReceta)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("medicina_recetas_FK_2");
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using pharma_izi.core.api.Controllers._base;
 using pharma_izi.core.handler.mediator.receta.crearCodigoQR;
+using pharma_izi.core.handler.mediator.receta.create;
 using pharma_izi.core.infrastructure.helpers;
 
 namespace pharma_izi.core.api.Controllers
@@ -16,10 +17,11 @@ namespace pharma_izi.core.api.Controllers
         }
 
         [HttpPost("receta")]
-        public async Task<IActionResult> createReceta()
+        public async Task<IActionResult> createReceta([FromBody] CrearRecetaDoctorQuery request)
         {
             try
             {
+                var req = await _mediator.Send(request);
                 return Ok();
             }
             catch (Exception ex)
