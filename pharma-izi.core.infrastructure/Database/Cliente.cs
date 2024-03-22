@@ -13,13 +13,11 @@ public partial class Cliente
 
     public string Email { get; set; } = null!;
 
-    public string Password { get; set; } = null!;
-
     public string Celular { get; set; } = null!;
 
-    public string Cedula { get; set; } = null!;
+    public string Identificacion { get; set; } = null!;
 
-    public DateTime FechaRegistro { get; set; }
+    public virtual ICollection<ClientesRegistro> ClientesRegistros { get; set; } = new List<ClientesRegistro>();
 
     public virtual ICollection<Receta> Receta { get; set; } = new List<Receta>();
 }

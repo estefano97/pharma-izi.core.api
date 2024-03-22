@@ -13,7 +13,7 @@ namespace pharma_izi.core.api.Controllers
         {
         }
 
-        [HttpPost("register")]
+        [HttpPost("login")]
         public async Task<IActionResult> LoginDoctor([FromBody]LoginDoctorDTO credentials)
         {
             try

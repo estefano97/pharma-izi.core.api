@@ -19,6 +19,8 @@ public partial class PharmaIziContext : DbContext
 
     public virtual DbSet<Cliente> Clientes { get; set; }
 
+    public virtual DbSet<ClientesRegistro> ClientesRegistros { get; set; }
+
     public virtual DbSet<CodigosQr> CodigosQrs { get; set; }
 
     public virtual DbSet<DetalleMedicina> DetalleMedicinas { get; set; }
@@ -90,11 +92,6 @@ public partial class PharmaIziContext : DbContext
                 .IsUnicode(false)
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("apellido");
-            entity.Property(e => e.Cedula)
-                .HasMaxLength(10)
-                .IsUnicode(false)
-                .UseCollation("Modern_Spanish_CI_AS")
-                .HasColumnName("cedula");
             entity.Property(e => e.Celular)
                 .HasMaxLength(20)
                 .IsUnicode(false)
@@ -105,19 +102,41 @@ public partial class PharmaIziContext : DbContext
                 .IsUnicode(false)
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("email");
-            entity.Property(e => e.FechaRegistro)
-                .HasColumnType("datetime")
-                .HasColumnName("fecha_registro");
+            entity.Property(e => e.Identificacion)
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .UseCollation("Modern_Spanish_CI_AS")
+                .HasColumnName("identificacion");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(128)
                 .IsUnicode(false)
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("nombre");
+        });
+
+        modelBuilder.Entity<ClientesRegistro>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("clientes_registro_PK");
+
+            entity.ToTable("clientes_registro");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.AceptoTerminosCondiciones).HasColumnName("acepto_terminos_condiciones");
+            entity.Property(e => e.FechaRegistro)
+                .HasColumnType("datetime")
+                .HasColumnName("fecha_registro");
+            entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
             entity.Property(e => e.Password)
                 .HasMaxLength(256)
                 .IsUnicode(false)
-                .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("password");
+
+            entity.HasOne(d => d.IdClienteNavigation).WithMany(p => p.ClientesRegistros)
+                .HasForeignKey(d => d.IdCliente)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("clientes_registro_FK");
         });
 
         modelBuilder.Entity<CodigosQr>(entity =>
@@ -172,6 +191,7 @@ public partial class PharmaIziContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
+            entity.Property(e => e.AceptoTerminosCondiciones).HasColumnName("acepto_terminos_condiciones");
             entity.Property(e => e.Apellido)
                 .HasMaxLength(128)
                 .IsUnicode(false)
@@ -208,7 +228,6 @@ public partial class PharmaIziContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(256)
                 .IsUnicode(false)
-                .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("password");
 
             entity.HasOne(d => d.IdTemplateRecetaNavigation).WithMany(p => p.Doctores)

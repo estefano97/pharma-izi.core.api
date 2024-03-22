@@ -34,6 +34,7 @@ namespace pharma_izi.core.infrastructure.helpers
                     new Claim(JwtRegisteredClaimNames.Sub, _jwtSettings.Subject),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
+                    new Claim("Role", AuthenticationRoles.Doctor),
                     new Claim("id", EncriptarClaim(idUser.ToString())),
                     new Claim("idTemplateReceta", EncriptarClaim(idTempateReceta.ToString())),
                     new Claim("email", EncriptarClaim(email)),
