@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 namespace pharma_izi.core.handler.mediator.medicamento.search
 {
 
-    public class GetMedicamentosOut
+    public class GetMedicamentosBusquedaOut
     {
-        public List<MedicamentoInformation> medicamentosBusqueda { get; set; } 
+        public List<MedicamentoInformation>? medicamentosBusqueda { get; set; }
 
         public class MedicamentoInformation
         {

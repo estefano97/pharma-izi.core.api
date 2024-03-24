@@ -7,18 +7,18 @@ using System.Collections.Generic;
 
 namespace pharma_izi.core.handler.mediator.medicamento.search
 {
-    internal class GetMedicamentosHandler : IRequestHandler<GetMedicamentosQuery, GetMedicamentosOut>
+    internal class GetMedicamentosBusquedaHandler : IRequestHandler<GetMedicamentosBusquedaQuery, GetMedicamentosBusquedaOut>
     {
         private readonly PharmaIziContext _context;
         private readonly IMapper _mapper;
 
-        public GetMedicamentosHandler(PharmaIziContext context, IMapper mapper)
+        public GetMedicamentosBusquedaHandler(PharmaIziContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public async Task<GetMedicamentosOut> Handle(GetMedicamentosQuery request, CancellationToken cancellationToken)
+        public async Task<GetMedicamentosBusquedaOut> Handle(GetMedicamentosBusquedaQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -26,9 +26,9 @@ namespace pharma_izi.core.handler.mediator.medicamento.search
                     .Where(m => m.Nombre.Contains(request.TerminoBusqueda))
                     .ToListAsync();
 
-                var medicamentosParsed = _mapper.Map<List<GetMedicamentosOut.MedicamentoInformation>>(medicamentos);
+                var medicamentosParsed = _mapper.Map<List<GetMedicamentosBusquedaOut.MedicamentoInformation>>(medicamentos);
 
-                return new GetMedicamentosOut { medicamentosBusqueda = medicamentosParsed};
+                return new GetMedicamentosBusquedaOut { medicamentosBusqueda = medicamentosParsed};
             }
             catch (Exception ex)
             {

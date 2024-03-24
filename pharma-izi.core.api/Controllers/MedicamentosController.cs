@@ -12,12 +12,10 @@ namespace pharma_izi.core.api.Controllers
     public class MedicamentosController : ApiBaseController
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public MedicamentosController(IMediator mediator, IMapper mapper) : base(mediator)
+        public MedicamentosController(IMediator mediator) : base(mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
         [HttpPost("search")]
@@ -25,8 +23,10 @@ namespace pharma_izi.core.api.Controllers
         {
             try
             {
-                var query = new GetMedicamentosQuery { TerminoBusqueda = bodyReq.searchTerm };
+                var query = new GetMedicamentosBusquedaQuery { TerminoBusqueda = bodyReq.searchTerm };
                 var respuesta = await _mediator.Send(query);
+
+                if (respuesta.medicamentosBusqueda == null) return NotFound("Medicamento no encontrado!");
 
                 return Ok(respuesta.medicamentosBusqueda);
             }
