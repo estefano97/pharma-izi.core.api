@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using pharma_izi.core.handler;
 using pharma_izi.core.infrastructure;
+using pharma_izi.core.infrastructure.helpers.consts;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +20,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+builder.Services.AddAuthentication(options =>
 {
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = false,
@@ -32,6 +41,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(AuthenticationRoles.Doctor, policy =>
+                      policy.RequireClaim(ClaimTypes.Role, AuthenticationRoles.Doctor));
+    options.AddPolicy(AuthenticationRoles.Cliente, policy =>
+                      policy.RequireClaim(ClaimTypes.Role, AuthenticationRoles.Cliente));
+    options.AddPolicy(AuthenticationRoles.Admin, policy =>
+                      policy.RequireClaim(ClaimTypes.Role, AuthenticationRoles.Admin));
+});
 
 builder.Services.AddCors(opciones =>
 {
@@ -46,20 +64,18 @@ builder.Services.AddCors(opciones =>
 
 builder.Services.AddInInfrestructureServices(config);
 builder.Services.AddInHandlerServices(config);
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

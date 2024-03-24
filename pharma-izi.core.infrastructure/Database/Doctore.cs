@@ -27,6 +27,8 @@ public partial class Doctore
 
     public DateTime FechaRegistro { get; set; }
 
+    public virtual ICollection<DoctorInformacionRecetum> DoctorInformacionReceta { get; set; } = new List<DoctorInformacionRecetum>();
+
     public virtual TemplatesReceta IdTemplateRecetaNavigation { get; set; } = null!;
 
     public virtual ICollection<Receta> Receta { get; set; } = new List<Receta>();

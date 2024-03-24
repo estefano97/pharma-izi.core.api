@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pharma_izi.core.infrastructure.helpers
+namespace pharma_izi.core.infrastructure.helpers.consts
 {
     internal class JwtSettings
     {
