@@ -13,7 +13,6 @@ namespace pharma_izi.core.handler.mapper
     {
         public DoctorMapper()
         {
-            CreateMap<LoginDoctorOut.LoginDoctorInformation, Doctore>();
             CreateMap<Doctore, LoginDoctorOut.LoginDoctorInformation>();
         }
     }

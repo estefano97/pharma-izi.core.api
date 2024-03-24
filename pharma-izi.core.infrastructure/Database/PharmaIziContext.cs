@@ -25,6 +25,8 @@ public partial class PharmaIziContext : DbContext
 
     public virtual DbSet<DetalleMedicina> DetalleMedicinas { get; set; }
 
+    public virtual DbSet<DoctorInformacionRecetum> DoctorInformacionReceta { get; set; }
+
     public virtual DbSet<Doctore> Doctores { get; set; }
 
     public virtual DbSet<EstadoPedido> EstadoPedidos { get; set; }
@@ -179,6 +181,31 @@ public partial class PharmaIziContext : DbContext
                 .HasForeignKey(d => d.IdMedicinaReceta)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("detalle_medicina_FK");
+        });
+
+        modelBuilder.Entity<DoctorInformacionRecetum>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("doctor_informacion_receta_PK");
+
+            entity.ToTable("doctor_informacion_receta");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(256)
+                .IsUnicode(false)
+                .HasColumnName("descripcion");
+            entity.Property(e => e.IdDoctor).HasColumnName("id_doctor");
+            entity.Property(e => e.Valor)
+                .HasMaxLength(256)
+                .IsUnicode(false)
+                .HasColumnName("valor");
+
+            entity.HasOne(d => d.IdDoctorNavigation).WithMany(p => p.DoctorInformacionReceta)
+                .HasForeignKey(d => d.IdDoctor)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("doctor_informacion_receta_FK");
         });
 
         modelBuilder.Entity<Doctore>(entity =>

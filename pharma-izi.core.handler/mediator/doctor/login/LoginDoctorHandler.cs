@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using pharma_izi.core.infrastructure.Database;
-using pharma_izi.core.infrastructure.helpers;
+using pharma_izi.core.infrastructure.helpers.services;
 
 namespace pharma_izi.core.handler.mediator.doctor.login
 {

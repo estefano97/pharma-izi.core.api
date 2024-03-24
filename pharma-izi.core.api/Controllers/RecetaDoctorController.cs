@@ -3,16 +3,19 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using pharma_izi.core.api.Controllers._base;
+using pharma_izi.core.handler.mediator.doctor.getAllRecetas;
 using pharma_izi.core.handler.mediator.receta.crearCodigoQR;
 using pharma_izi.core.handler.mediator.receta.create;
-using pharma_izi.core.infrastructure.helpers;
+using pharma_izi.core.infrastructure.helpers.consts;
+using pharma_izi.core.infrastructure.helpers.services;
+using System.Security.Claims;
 
 namespace pharma_izi.core.api.Controllers
 {
-    //[Authorize(Roles = AuthenticationRoles.Doctor)]
+    [Authorize(Policy = AuthenticationRoles.Doctor)]
     public class RecetaDoctorController : ApiBaseController
     {
-        public RecetaDoctorController(IMediator mediator) : base(mediator)
+        public RecetaDoctorController(IMediator mediator, IClaimsManager claimsManager) : base(mediator, claimsManager)
         {
         }
 
@@ -30,13 +33,17 @@ namespace pharma_izi.core.api.Controllers
             }
         }
 
-        [HttpGet("prueba")]
-        public async Task<IActionResult> testearQrCode([FromQuery]Guid idPrueba)
+        [HttpGet("getAll")]
+        public async Task<IActionResult> getAllRecetasByDoctor()
         {
             try
             {
-                var req = await _mediator.Send(new CrearCodigoQrRecetaQuery { idReceta = idPrueba });
-                return Ok(req);
+                string idDoctorDesencrypted = ReadClaimFromToken(TokenClaims.id);
+                Guid idDoctor = Guid.Parse(idDoctorDesencrypted);
+
+                var request = await _mediator.Send(new GetAllRecetasDoctorQuery { IdDoctor = idDoctor });
+
+                return Ok(request);
             }
             catch (Exception ex)
             {

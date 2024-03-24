@@ -1,6 +1,4 @@
-﻿
-
-namespace pharma_izi.core.infrastructure.helpers
+﻿namespace pharma_izi.core.infrastructure.helpers.services
 {
     public interface ITokenGenerator
     {
