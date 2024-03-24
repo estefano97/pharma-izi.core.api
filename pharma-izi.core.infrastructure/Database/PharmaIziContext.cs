@@ -45,6 +45,8 @@ public partial class PharmaIziContext : DbContext
 
     public virtual DbSet<Receta> Recetas { get; set; }
 
+    public virtual DbSet<StockMedicamentoZona> StockMedicamentoZonas { get; set; }
+
     public virtual DbSet<TemplatesReceta> TemplatesRecetas { get; set; }
 
     public virtual DbSet<TipoIva> TipoIvas { get; set; }
@@ -303,16 +305,18 @@ public partial class PharmaIziContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.EnStock).HasColumnName("en_stock");
             entity.Property(e => e.FotoMedicamento)
                 .HasMaxLength(512)
                 .IsUnicode(false)
                 .UseCollation("Modern_Spanish_CI_AS")
                 .HasColumnName("foto_medicamento");
             entity.Property(e => e.IdCategoriaMedicamento).HasColumnName("id_categoria_medicamento");
+            entity.Property(e => e.IdFybeca)
+                .HasMaxLength(100)
+                .IsUnicode(false)
+                .HasColumnName("id_fybeca");
             entity.Property(e => e.IdMarcaMedicamento).HasColumnName("id_marca_medicamento");
             entity.Property(e => e.IdTipoIva).HasColumnName("id_tipo_iva");
-            entity.Property(e => e.IdZonaConsulta).HasColumnName("id_zona_consulta");
             entity.Property(e => e.Nombre)
                 .HasMaxLength(256)
                 .IsUnicode(false)
@@ -334,11 +338,6 @@ public partial class PharmaIziContext : DbContext
                 .HasForeignKey(d => d.IdTipoIva)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("medicamentos_FK_1");
-
-            entity.HasOne(d => d.IdZonaConsultaNavigation).WithMany(p => p.Medicamentos)
-                .HasForeignKey(d => d.IdZonaConsulta)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("medicamentos_FK_3");
         });
 
         modelBuilder.Entity<MedicinaReceta>(entity =>
@@ -496,6 +495,30 @@ public partial class PharmaIziContext : DbContext
                 .HasForeignKey(d => d.IdDoctor)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("recetas_FK");
+        });
+
+        modelBuilder.Entity<StockMedicamentoZona>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("stock_medicamento_zona_PK");
+
+            entity.ToTable("stock_medicamento_zona");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.EnStock).HasColumnName("en_stock");
+            entity.Property(e => e.IdMedicamento).HasColumnName("id_medicamento");
+            entity.Property(e => e.IdZona).HasColumnName("id_zona");
+
+            entity.HasOne(d => d.IdMedicamentoNavigation).WithMany(p => p.StockMedicamentoZonas)
+                .HasForeignKey(d => d.IdMedicamento)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("stock_medicamento_zona_FK");
+
+            entity.HasOne(d => d.IdZonaNavigation).WithMany(p => p.StockMedicamentoZonas)
+                .HasForeignKey(d => d.IdZona)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("stock_medicamento_zona_FK_1");
         });
 
         modelBuilder.Entity<TemplatesReceta>(entity =>

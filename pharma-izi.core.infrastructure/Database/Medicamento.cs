@@ -11,8 +11,6 @@ public partial class Medicamento
 
     public Guid IdCategoriaMedicamento { get; set; }
 
-    public bool EnStock { get; set; }
-
     public Guid IdTipoIva { get; set; }
 
     public string FotoMedicamento { get; set; } = null!;
@@ -21,7 +19,7 @@ public partial class Medicamento
 
     public Guid IdMarcaMedicamento { get; set; }
 
-    public Guid IdZonaConsulta { get; set; }
+    public string? IdFybeca { get; set; }
 
     public virtual CategoriaMedicamento IdCategoriaMedicamentoNavigation { get; set; } = null!;
 
@@ -29,7 +27,7 @@ public partial class Medicamento
 
     public virtual TipoIva IdTipoIvaNavigation { get; set; } = null!;
 
-    public virtual ZonaConsultum IdZonaConsultaNavigation { get; set; } = null!;
-
     public virtual ICollection<PresentacionesMedicamento> PresentacionesMedicamentos { get; set; } = new List<PresentacionesMedicamento>();
+
+    public virtual ICollection<StockMedicamentoZona> StockMedicamentoZonas { get; set; } = new List<StockMedicamentoZona>();
 }

@@ -9,5 +9,5 @@ public partial class ZonaConsultum
 
     public string Descripcion { get; set; } = null!;
 
-    public virtual ICollection<Medicamento> Medicamentos { get; set; } = new List<Medicamento>();
+    public virtual ICollection<StockMedicamentoZona> StockMedicamentoZonas { get; set; } = new List<StockMedicamentoZona>();
 }
