@@ -23,10 +23,12 @@ namespace pharma_izi.core.api.Controllers
         {
             try
             {
+                if (bodyReq.searchTerm.Length < 3) return BadRequest("termino de busqueda muy corto!");
+                
                 var query = new GetMedicamentosBusquedaQuery { TerminoBusqueda = bodyReq.searchTerm };
                 var respuesta = await _mediator.Send(query);
 
-                if (respuesta.medicamentosBusqueda == null) return NotFound("Medicamento no encontrado!");
+                if (respuesta.medicamentosBusqueda.Count() < 1) return NotFound("Medicamento no encontrado!");
 
                 return Ok(respuesta.medicamentosBusqueda);
             }

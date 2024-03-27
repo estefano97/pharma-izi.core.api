@@ -24,6 +24,7 @@ namespace pharma_izi.core.handler.mediator.medicamento.search
             {
                 var medicamentos = await _context.Medicamentos
                     .Where(m => m.Nombre.Contains(request.TerminoBusqueda))
+                    .Take(20)
                     .ToListAsync();
 
                 var medicamentosParsed = _mapper.Map<List<GetMedicamentosBusquedaOut.MedicamentoInformation>>(medicamentos);
