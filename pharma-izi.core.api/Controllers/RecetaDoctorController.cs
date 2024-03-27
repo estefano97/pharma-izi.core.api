@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using pharma_izi.core.api.Controllers._base;
+using pharma_izi.core.api.DTOs.receta;
 using pharma_izi.core.handler.mediator.doctor.getAllRecetas;
 using pharma_izi.core.handler.mediator.receta.crearCodigoQR;
 using pharma_izi.core.handler.mediator.receta.create;
@@ -19,13 +20,22 @@ namespace pharma_izi.core.api.Controllers
         {
         }
 
-        [HttpPost("receta")]
-        public async Task<IActionResult> createReceta([FromBody] CrearRecetaDoctorQuery request)
+        [HttpPost("crear")]
+        public async Task<IActionResult> createReceta([FromBody] CrearRecetaDoctorDTO request)
         {
             try
             {
-                var req = await _mediator.Send(request);
-                return Ok();
+                string idDoctorDesencrypted = ReadClaimFromToken(TokenClaims.id);
+                Guid idDoctor = Guid.Parse(idDoctorDesencrypted);
+                var req = await _mediator.Send(
+                    new CrearRecetaDoctorQuery { 
+                        Descripcion = request.Descripcion, 
+                        informacionCliente = request.informacionCliente, 
+                        medicamentos = request.medicamentos, 
+                        IdDoctor = idDoctor 
+                    }
+                );
+                return Ok("receta creada con exito!");
             }
             catch (Exception ex)
             {
