@@ -26,6 +26,7 @@ namespace pharma_izi.core.handler.mediator.receta.create
         {
             public string nombreMedicamento { get; set; }
             public Guid? idPresentacionMedicina { get; set; }
+            public int cantidad { get; set; }
             public List<AdicionalMedicamento> descripcionesAdicionales { get; set; }
         }
 

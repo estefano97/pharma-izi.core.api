@@ -9,6 +9,7 @@ namespace pharma_izi.core.handler.mapper
         public MedicamentosMapper()
         {
             CreateMap<Medicamento, GetMedicamentosBusquedaOut.MedicamentoInformation>();
+            CreateMap<PresentacionesMedicamento, GetMedicamentosBusquedaOut.PresentacionMedicamentoInformation>();
         }
     }
 }

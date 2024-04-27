@@ -18,7 +18,19 @@ namespace pharma_izi.core.handler.mediator.medicamento.search
             
             public string FotoMedicamento { get; set; } 
 
-            public bool RequiereReceta { get; set; } 
+            public bool RequiereReceta { get; set; }
+
+            public List<PresentacionMedicamentoInformation> PresentacionesMedicamentos { get; set; }
+        }
+
+        public class PresentacionMedicamentoInformation
+        {
+            public Guid Id { get; set; }
+
+            public decimal Valor { get; set; }
+
+            public string? Descripcion { get; set; }
+
         }
     }
 
